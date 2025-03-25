@@ -1,10 +1,9 @@
 "use client";
-import Image from "next/image";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { authClient } from "../lib/auth-client";
+import { authClient } from "../../../lib/auth-client";
 
 type FormErrors = {
   email?: string[];
@@ -69,16 +68,7 @@ export default function Home() {
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-
+      <div className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <div className="w-80">
           <form onSubmit={handleSubmit}>
             <div className="space-y-4">
@@ -184,28 +174,11 @@ export default function Home() {
               }}
               className="w-full bg-blue-600 text-white rounded-md px-4 py-2 hover:bg-blue-700 transition-colors"
             >
-              Login with Google
+              Sign up with Google
             </button>
           </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          By{" "}
-          <Image
-            src="/vercel.svg"
-            alt="Vercel Logo"
-            className="dark:invert"
-            width={100}
-            height={24}
-            priority
-          />
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }

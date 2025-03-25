@@ -1,14 +1,11 @@
 "use client";
 import { authClient } from "../../lib/auth-client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const {
     data: session,
     isPending, //loading state
-    error, //error object
-    refetch, //refetch the session
   } = authClient.useSession();
   const router = useRouter();
 
