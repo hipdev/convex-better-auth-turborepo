@@ -11,18 +11,24 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@better-auth-kit/convex": "^1.1.0",
+    "@repo/backend": "workspace:*",
     "@repo/ui": "workspace:*",
-    "next": "^15.2.1",
+    "better-auth": "^1.2.4",
+    "convex": "^1.21.0",
+    "next": "^15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.13.10",
-    "@types/react": "19.0.10",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^22.13.13",
+    "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
-    "eslint": "^9.22.0",
+    "eslint": "^9.23.0",
+    "tailwindcss": "^4.0.16",
     "typescript": "5.8.2"
   }
 }
