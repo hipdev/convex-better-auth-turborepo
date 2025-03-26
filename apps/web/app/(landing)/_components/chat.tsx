@@ -1,85 +1,89 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-
-interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'bot';
-  timestamp: Date;
-}
+import { useQuery, useMutation } from 'convex/react'
+import { api } from '@repo/backend/convex/_generated/api'
+import { useEffect, useRef, useState } from 'react'
+import { authClient } from '../../../lib/auth-client'
+import { Id } from '@repo/backend/convex/_generated/dataModel'
 
 export function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
+  const {
+    data: session,
+    isPending //loading state
+  } = authClient.useSession()
 
-  const handleSend = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (input.trim()) {
-      const newMessage: Message = {
-        id: Math.random().toString(36).substring(2, 9),
-        text: input,
-        sender: 'user',
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, newMessage]);
-      setInput('');
+  console.log(session, 'session')
 
-      // Simulate bot response
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: Math.random().toString(36).substring(2, 9),
-            text: 'This is a bot response',
-            sender: 'bot',
-            timestamp: new Date(),
-          },
-        ]);
-      }, 1000);
+  const messages = useQuery(api.chat.getMessages)
+  const sendMessage = useMutation(api.chat.sendMessage)
+  const [input, setInput] = useState('')
+
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    let userId = session?.user.id as Id<'user'>
+
+    if (!session?.user.id) {
+      // Create anonymous user
+      const user = await authClient.signIn.anonymous()
+      console.log(user, 'anonymous user created')
+      userId = user.data?.user?.id as Id<'user'>
     }
-  };
+
+    if (input.trim()) {
+      await sendMessage({ userId, message: input })
+      setInput('')
+    }
+  }
+
+  // Scroll to bottom with every new message
+  const chatRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight
+    }
+  }, [messages])
 
   return (
-    <div className="flex flex-col h-[400px] border border-gray-700 rounded-lg overflow-hidden">
-      <div className="flex-1 p-4 overflow-y-auto bg-gray-800">
-        {messages.map((message) => (
+    <div className='flex h-[400px] flex-col overflow-hidden rounded-lg border border-gray-700'>
+      <div className='flex-1 overflow-y-auto bg-gray-800 p-4' ref={chatRef}>
+        {messages?.map((message) => (
           <div
-            key={message.id}
-            className={`mb-4 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}
+            key={message._id}
+            className={`mb-4 ${message.userId === session?.user.id ? 'text-right' : 'text-left'}`}
           >
             <div
-              className={`inline-block max-w-[80%] px-4 py-2 rounded-lg ${
-                message.sender === 'user'
+              className={`inline-block max-w-[80%] rounded-lg px-4 py-2 ${
+                message.userId === session?.user.id
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-700 text-gray-100'
               }`}
             >
-              {message.text}
+              {message.message}
             </div>
-            <div className="text-xs text-gray-400 mt-1">
-              {message.timestamp.toLocaleTimeString()}
+            <div className='mt-1 text-xs text-gray-400'>
+              {new Date(message.createdAt).toLocaleTimeString()}
             </div>
           </div>
         ))}
       </div>
-      <form onSubmit={handleSend} className="p-4 bg-gray-900">
-        <div className="flex gap-2">
+      <form onSubmit={handleSend} className='bg-gray-900 p-4'>
+        <div className='flex gap-2'>
           <input
-            type="text"
+            type='text'
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-1 px-4 py-2 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
-            placeholder="Type a message..."
+            className='flex-1 rounded-lg bg-gray-800 px-4 py-2 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600'
+            placeholder='Type a message...'
           />
           <button
-            type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            type='submit'
+            className='rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700'
           >
             Send
           </button>
         </div>
       </form>
     </div>
-  );
+  )
 }
