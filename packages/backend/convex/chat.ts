@@ -29,3 +29,23 @@ export const deleteMessage = mutation({
     await ctx.db.delete(args.messageId)
   }
 })
+
+// migrate anonymous chat messages know user
+export const migrateAnonymousChat = mutation({
+  args: {
+    userId: v.id('user'),
+    anonymousUserId: v.id('user')
+  },
+  handler: async (ctx, args) => {
+    const chatMessages = await ctx.db
+      .query('chat')
+      .withIndex('by_userId', (q) => q.eq('userId', args.anonymousUserId))
+      .collect()
+
+    for (const message of chatMessages) {
+      await ctx.db.patch(message._id, {
+        userId: args.userId
+      })
+    }
+  }
+})

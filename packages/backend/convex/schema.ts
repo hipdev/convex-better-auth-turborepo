@@ -6,7 +6,10 @@ export default defineSchema({
     userId: v.id('user'),
     message: v.string(),
     createdAt: v.number()
-  }).index('by_createdAt', ['createdAt']),
+  })
+    .index('by_createdAt', ['createdAt'])
+    .index('by_userId', ['userId']),
+
   user: defineTable({
     name: v.string(),
     email: v.string(),
