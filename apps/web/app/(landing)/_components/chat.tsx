@@ -7,12 +7,7 @@ import { authClient } from '../../../lib/auth-client'
 import { Id } from '@repo/backend/convex/_generated/dataModel'
 
 export function Chat() {
-  const {
-    data: session,
-    isPending //loading state
-  } = authClient.useSession()
-
-  console.log(session, 'session')
+  const { data: session } = authClient.useSession()
 
   const messages = useQuery(api.chat.getMessages)
   const sendMessage = useMutation(api.chat.sendMessage)
@@ -26,7 +21,6 @@ export function Chat() {
     if (!session?.user.id) {
       // Create anonymous user
       const user = await authClient.signIn.anonymous()
-      console.log(user, 'anonymous user created')
       userId = user.data?.user?.id as Id<'user'>
     }
 

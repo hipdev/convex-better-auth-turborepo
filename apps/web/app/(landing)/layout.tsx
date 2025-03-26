@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { HeaderNav } from './_components/header-nav'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -8,17 +9,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Link href='/' className='text-2xl font-bold'>
             Chat Demo
           </Link>
-          <nav className='flex space-x-4'>
-            <a href='/signup' className='text-gray-300 hover:text-white'>
-              SignUp
-            </a>
-            <a href='/login' className='text-gray-300 hover:text-white'>
-              Login
-            </a>
-            <Link href='/' className='text-gray-300 hover:text-white'>
-              Chat
-            </Link>
-          </nav>
+          <HeaderNav />
         </div>
       </header>
       <main className='container mx-auto flex-1 px-4 py-6'>{children}</main>
