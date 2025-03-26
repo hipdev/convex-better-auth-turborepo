@@ -16,7 +16,8 @@ export const auth = betterAuth({
         if (anonymousUser.user.id && newUser.user.id) {
           await fetchMutation(api.chat.migrateAnonymousChat, {
             userId: newUser.user.id as Id<'user'>,
-            anonymousUserId: anonymousUser.user.id as Id<'user'>
+            anonymousUserId: anonymousUser.user.id as Id<'user'>,
+            name: newUser.user?.name
           })
         }
       }

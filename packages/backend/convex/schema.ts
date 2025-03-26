@@ -5,7 +5,8 @@ export default defineSchema({
   chat: defineTable({
     userId: v.id('user'),
     message: v.string(),
-    createdAt: v.number()
+    createdAt: v.number(),
+    name: v.optional(v.string())
   })
     .index('by_createdAt', ['createdAt'])
     .index('by_userId', ['userId']),

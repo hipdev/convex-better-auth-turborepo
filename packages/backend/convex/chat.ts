@@ -1,6 +1,7 @@
 import { query } from './_generated/server'
 import { mutation } from './_generated/server'
 import { v } from 'convex/values'
+import { betterAuth } from './betterAuth'
 
 export const getMessages = query({
   args: {},
@@ -12,11 +13,13 @@ export const getMessages = query({
 export const sendMessage = mutation({
   args: {
     userId: v.id('user'),
+    name: v.optional(v.string()),
     message: v.string()
   },
   handler: async (ctx, args) => {
     await ctx.db.insert('chat', {
       userId: args.userId,
+      name: args.name || 'Anonymous',
       message: args.message,
       createdAt: Date.now()
     })
@@ -26,6 +29,18 @@ export const sendMessage = mutation({
 export const deleteMessage = mutation({
   args: { messageId: v.id('chat') },
   handler: async (ctx, args) => {
+    const session = await ctx.auth.getUserIdentity()
+    console.log(ctx.auth.getUserIdentity())
+
+    if (!session) {
+      throw new Error('Unauthorized')
+    }
+
+    const message = await ctx.db.get(args.messageId)
+    if (!message) {
+      throw new Error('Message not found')
+    }
+
     await ctx.db.delete(args.messageId)
   }
 })
@@ -34,7 +49,8 @@ export const deleteMessage = mutation({
 export const migrateAnonymousChat = mutation({
   args: {
     userId: v.id('user'),
-    anonymousUserId: v.id('user')
+    anonymousUserId: v.id('user'),
+    name: v.optional(v.string())
   },
   handler: async (ctx, args) => {
     const chatMessages = await ctx.db
@@ -44,7 +60,8 @@ export const migrateAnonymousChat = mutation({
 
     for (const message of chatMessages) {
       await ctx.db.patch(message._id, {
-        userId: args.userId
+        userId: args.userId,
+        name: args.name || 'Anonymous'
       })
     }
   }

@@ -11,6 +11,7 @@ export function Chat() {
 
   const messages = useQuery(api.chat.getMessages)
   const sendMessage = useMutation(api.chat.sendMessage)
+  const deleteMessage = useMutation(api.chat.deleteMessage)
   const [input, setInput] = useState('')
 
   const handleSend = async (e: React.FormEvent) => {
@@ -25,9 +26,13 @@ export function Chat() {
     }
 
     if (input.trim()) {
-      await sendMessage({ userId, message: input })
+      await sendMessage({ userId, message: input, name: session?.user.name || 'Anonymous' })
       setInput('')
     }
+  }
+
+  const handleDelete = async (messageId: Id<'chat'>) => {
+    await deleteMessage({ messageId })
   }
 
   // Scroll to bottom with every new message
@@ -47,16 +52,26 @@ export function Chat() {
             className={`mb-4 ${message.userId === session?.user.id ? 'text-right' : 'text-left'}`}
           >
             <div
-              className={`inline-block max-w-[80%] rounded-lg px-4 py-2 ${
+              className={`group relative inline-block max-w-[80%] rounded-lg px-4 py-2 ${
                 message.userId === session?.user.id
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-700 text-gray-100'
-              }`}
+              } }`}
             >
               {message.message}
-            </div>
-            <div className='mt-1 text-xs text-gray-400'>
-              {new Date(message.createdAt).toLocaleTimeString()}
+              <div className='mt-1 text-xs text-gray-300'>
+                {new Date(message.createdAt).toLocaleTimeString()}
+              </div>
+              <div className='text-xs text-gray-300'>{message.name || 'Anonymous'}</div>
+              {message.userId === session?.user.id && (
+                <button
+                  type='button'
+                  className='absolute -right-1 -top-1 hidden cursor-pointer rounded-full bg-red-800 px-1 text-xs text-white transition-colors hover:bg-red-700 group-hover:block'
+                  onClick={() => handleDelete(message._id)}
+                >
+                  x
+                </button>
+              )}
             </div>
           </div>
         ))}
@@ -72,7 +87,7 @@ export function Chat() {
           />
           <button
             type='submit'
-            className='rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700'
+            className='cursor-pointer rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700'
           >
             Send
           </button>
