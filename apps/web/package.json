@@ -11,10 +11,10 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@better-auth-kit/convex": "^1.1.0",
+    "@better-auth-kit/convex": "^1.1.2",
     "@repo/backend": "workspace:*",
     "@repo/ui": "workspace:*",
-    "better-auth": "^1.2.4",
+    "better-auth": "^1.2.5",
     "convex": "^1.21.0",
     "next": "^15.2.4",
     "react": "^19.0.0",
@@ -24,7 +24,7 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^22.13.13",
+    "@types/node": "^22.13.14",
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
     "eslint": "^9.23.0",

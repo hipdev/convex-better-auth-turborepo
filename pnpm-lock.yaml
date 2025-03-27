@@ -24,8 +24,8 @@ importers:
   apps/web:
     dependencies:
       '@better-auth-kit/convex':
-        specifier: ^1.1.0
-        version: 1.1.0(better-auth@1.2.4(typescript@5.8.2))(convex@1.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.8.2)
+        specifier: ^1.1.2
+        version: 1.1.2(better-auth@1.2.5(typescript@5.8.2))(convex@1.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.8.2)
       '@repo/backend':
         specifier: workspace:*
         version: link:../../packages/backend
@@ -33,8 +33,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       better-auth:
-        specifier: ^1.2.4
-        version: 1.2.4(typescript@5.8.2)
+        specifier: ^1.2.5
+        version: 1.2.5(typescript@5.8.2)
       convex:
         specifier: ^1.21.0
         version: 1.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -58,8 +58,8 @@ importers:
         specifier: ^4
         version: 4.0.16
       '@types/node':
-        specifier: ^22.13.13
-        version: 22.13.13
+        specifier: ^22.13.14
+        version: 22.13.14
       '@types/react':
         specifier: 19.0.12
         version: 19.0.12
@@ -70,8 +70,8 @@ importers:
         specifier: ^9.23.0
         version: 9.23.0(jiti@2.4.2)
       tailwindcss:
-        specifier: ^4.0.16
-        version: 4.0.16
+        specifier: ^4.0.17
+        version: 4.0.17
       typescript:
         specifier: 5.8.2
         version: 5.8.2
@@ -79,11 +79,18 @@ importers:
   packages/backend:
     dependencies:
       '@better-auth-kit/convex':
-        specifier: ^1.1.0
-        version: 1.1.0(better-auth@1.2.4(typescript@5.8.2))(convex@1.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.8.2)
+        specifier: ^1.1.2
+        version: 1.1.2(better-auth@1.2.5(typescript@5.8.2))(convex@1.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.8.2)
+      better-auth:
+        specifier: ^1.2.5
+        version: 1.2.5(typescript@5.8.2)
       convex:
         specifier: ^1.21.0
         version: 1.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.14
+        version: 22.13.14
 
   packages/eslint-config:
     devDependencies:
@@ -120,6 +127,12 @@ importers:
       typescript-eslint:
         specifier: ^8.26.0
         version: 8.26.0(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2)
+
+  packages/types:
+    dependencies:
+      convex:
+        specifier: ^1.21.0
+        version: 1.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
 
   packages/typescript-config: {}
 
@@ -167,15 +180,15 @@ packages:
     resolution: {integrity: sha512-5EVjbTegqN7RSJle6hMWYxO4voo4rI+9krITk+DWR+diJgGrjZjrIBnJhjrHYYQsFgI7j1w1QnrvV7YSKBfYGg==}
     engines: {node: '>=6.9.0'}
 
-  '@better-auth-kit/convex@1.1.0':
-    resolution: {integrity: sha512-D9Z2GdLVekibYdIE5HVRrpZRjGrkOG8PHXDN2EuyeAProm0ioS4bj9u5/6MrqGdD9yNAMkf1UsEnSSkUzjC/uQ==}
+  '@better-auth-kit/convex@1.1.2':
+    resolution: {integrity: sha512-GMBXUGh9PkidAacoJGqclPDVxyq7tPBILvqegZppBDU/970W343qybzXSgP9i66ffqJSniDRgO9CIGRe0152ng==}
     peerDependencies:
       better-auth: ^1.2.3
       convex: ^1.17.4
       typescript: ^5.7.2
 
-  '@better-auth/utils@0.2.3':
-    resolution: {integrity: sha512-Ap1GaSmo6JYhJhxJOpUB0HobkKPTNzfta+bLV89HfpyCAHN7p8ntCrmNFHNAVD0F6v0mywFVEUg1FUhNCc81Rw==}
+  '@better-auth/utils@0.2.4':
+    resolution: {integrity: sha512-ayiX87Xd5sCHEplAdeMgwkA0FgnXsEZBgDn890XHHwSWNqqRZDYOq3uj2Ei2leTv1I2KbG5HHn60Ah1i2JWZjQ==}
 
   '@better-fetch/fetch@1.1.17':
     resolution: {integrity: sha512-MQonMalbmEshb+amuLtCkVjYliyyWrYXZkiMnHLgFjNEBsNBbZSY3+lYsFK1/VxePSupVkUW6xinqhqB3uHE1g==}
@@ -744,8 +757,8 @@ packages:
   '@types/node@22.13.10':
     resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
 
-  '@types/node@22.13.13':
-    resolution: {integrity: sha512-ClsL5nMwKaBRwPcCvH8E7+nU4GxHVx1axNvMZTFHMEfNI7oahimt26P5zjVCRrjiIWj6YFXfE1v3dEp94wLcGQ==}
+  '@types/node@22.13.14':
+    resolution: {integrity: sha512-Zs/Ollc1SJ8nKUAgc7ivOEdIBM8JAKgrqqUYi2J997JuKO7/tpQC+WCetQ1sypiKCQWHdvdg9wBNpUPEWZae7w==}
 
   '@types/react-dom@19.0.4':
     resolution: {integrity: sha512-4fSQ8vWFkg+TGhePfUzVmat3eC14TXYSsiiDSLI0dVLsrm9gZFABjPy/Qu6TKgl1tq1Bu1yDsuQgY3A3DOjCcg==}
@@ -919,8 +932,8 @@ packages:
     resolution: {integrity: sha512-4Bcg1P8xhUuqcii/S0Z9wiHIrQVPMermM1any+MX5GeGD7faD3/msQUDGLol9wOcz4/jbg/WJnGqoJF6LiBdtg==}
     engines: {node: '>=10.0.0'}
 
-  better-auth@1.2.4:
-    resolution: {integrity: sha512-/ZK2jbUjm8JwdeCLFrUWUBmexPyI9PkaLVXWLWtN60sMDHTY8B5G72wcHglo1QMFBaw4G0qFkP5ayl9k6XfDaA==}
+  better-auth@1.2.5:
+    resolution: {integrity: sha512-Tz2aKImkvaT7P9qHQ67Vhw/Slo6zpvE0jG7GoDQM+dd5tWuC3lP0OGjjWkNCZdToVlWB193i5nSHeZT90sFqEw==}
 
   better-call@1.0.5:
     resolution: {integrity: sha512-rAT73GWIJ8LbSP8Y3BdJnY1hwAiQPRRmUJ4R3YVhcVGS927l3eTXG5o5TD6Bv6je6ygjdx6iVq3/BU49eGUCHg==}
@@ -2388,6 +2401,9 @@ packages:
   tailwindcss@4.0.16:
     resolution: {integrity: sha512-i/SbG7ThTIcLshcFJL+je7hCv9dPis4Xl4XNeel6iZNX42pp/BZ+la+SbZIPoYE+PN8zhKbnHblpQ/lhOWwIeQ==}
 
+  tailwindcss@4.0.17:
+    resolution: {integrity: sha512-OErSiGzRa6rLiOvaipsDZvLMSpsBZ4ysB4f0VKGXUrjw2jfkJRd6kjRKV2+ZmTCNvwtvgdDam5D7w6WXsdLJZw==}
+
   tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
@@ -2611,15 +2627,16 @@ snapshots:
       core-js-pure: 3.41.0
       regenerator-runtime: 0.14.1
 
-  '@better-auth-kit/convex@1.1.0(better-auth@1.2.4(typescript@5.8.2))(convex@1.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.8.2)':
+  '@better-auth-kit/convex@1.1.2(better-auth@1.2.5(typescript@5.8.2))(convex@1.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.8.2)':
     dependencies:
-      better-auth: 1.2.4(typescript@5.8.2)
+      better-auth: 1.2.5(typescript@5.8.2)
       convex: 1.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       prettier: 3.5.3
       typescript: 5.8.2
 
-  '@better-auth/utils@0.2.3':
+  '@better-auth/utils@0.2.4':
     dependencies:
+      typescript: 5.8.2
       uncrypto: 0.1.3
 
   '@better-fetch/fetch@1.1.17': {}
@@ -3084,7 +3101,7 @@ snapshots:
   '@types/glob@7.2.0':
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 22.13.13
+      '@types/node': 22.13.14
 
   '@types/inquirer@6.5.0':
     dependencies:
@@ -3099,7 +3116,7 @@ snapshots:
     dependencies:
       undici-types: 6.20.0
 
-  '@types/node@22.13.13':
+  '@types/node@22.13.14':
     dependencies:
       undici-types: 6.20.0
 
@@ -3121,7 +3138,7 @@ snapshots:
 
   '@types/through@0.0.33':
     dependencies:
-      '@types/node': 22.13.13
+      '@types/node': 22.13.14
 
   '@types/tinycolor2@1.4.6': {}
 
@@ -3325,9 +3342,9 @@ snapshots:
 
   basic-ftp@5.0.5: {}
 
-  better-auth@1.2.4(typescript@5.8.2):
+  better-auth@1.2.5(typescript@5.8.2):
     dependencies:
-      '@better-auth/utils': 0.2.3
+      '@better-auth/utils': 0.2.4
       '@better-fetch/fetch': 1.1.17
       '@noble/ciphers': 0.6.0
       '@noble/hashes': 1.7.1
@@ -5084,6 +5101,8 @@ snapshots:
       upper-case: 1.1.3
 
   tailwindcss@4.0.16: {}
+
+  tailwindcss@4.0.17: {}
 
   tapable@2.2.1: {}
 

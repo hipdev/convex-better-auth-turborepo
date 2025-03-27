@@ -10,7 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@better-auth-kit/convex": "^1.1.0",
+    "@better-auth-kit/convex": "^1.1.2",
+    "better-auth": "^1.2.5",
     "convex": "^1.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14"
   }
 }
