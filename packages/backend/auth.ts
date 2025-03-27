@@ -1,7 +1,7 @@
 import { betterAuth } from 'better-auth'
 import { convexAdapter } from '@better-auth-kit/convex'
-import {  ConvexHttpClient } from 'convex/browser'
-import { anonymous } from 'better-auth/plugins'
+import { ConvexHttpClient } from 'convex/browser'
+import { anonymous, jwt } from 'better-auth/plugins'
 
 const convexClient = new ConvexHttpClient(process.env.CONVEX_URL!)
 
@@ -9,7 +9,7 @@ console.log(process.env.CONVEX_URL, 'log')
 
 export const auth = betterAuth({
   database: convexAdapter(convexClient),
-  plugins: [anonymous()],
+  plugins: [anonymous(), jwt()],
   //... other options
   emailAndPassword: {
     enabled: true

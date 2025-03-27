@@ -32,7 +32,9 @@ export function Chat() {
   }
 
   const handleDelete = async (messageId: Id<'chat'>) => {
-    await deleteMessage({ messageId })
+    const response = await fetch('/api/auth/token')
+    const { token } = await response.json()
+    await deleteMessage({ messageId, jwt: token })
   }
 
   // Scroll to bottom with every new message
