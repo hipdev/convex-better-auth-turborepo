@@ -44,12 +44,23 @@ export default function Home() {
     }
 
     try {
-      const { error } = await authClient.signUp.email({
-        email,
-        password,
-        name,
-        callbackURL: '/dashboard'
-      })
+      const { error } = await authClient.signUp.email(
+        {
+          email,
+          password,
+          name,
+          callbackURL: '/dashboard'
+        },
+        {
+          onSuccess: (ctx) => {
+            const authToken = ctx.response.headers.get('set-auth-token') // get the token from the response headers
+            // Store the token securely (e.g., in localStorage)
+            if (authToken) {
+              localStorage.setItem('bearer_token', authToken)
+            }
+          }
+        }
+      )
 
       if (error) {
         setErrors({

@@ -1,8 +1,9 @@
-import { query } from './_generated/server'
-import { mutation } from './_generated/server'
+import type { GenericMutationCtx } from 'convex/server'
+import { internalMutation, mutation, query } from './_generated/server'
 import { v } from 'convex/values'
 
 import { jwtVerify, createLocalJWKSet } from 'jose'
+import { api, internal } from './_generated/api'
 
 export const getMessages = query({
   args: {},
@@ -28,10 +29,11 @@ export const sendMessage = mutation({
 })
 
 export const deleteMessage = mutation({
-  args: { messageId: v.id('chat'), jwt: v.string() },
+  args: { messageId: v.id('chat'), sessionToken: v.string() },
   handler: async (ctx, args) => {
-    const session = await validateToken(args.jwt)
-    console.log(session)
+    const session = await ctx.runQuery(internal.betterAuth.getSession, {
+      sessionToken: args.sessionToken
+    })
 
     if (!session) {
       throw new Error('Unauthorized')
@@ -67,30 +69,3 @@ export const migrateAnonymousChat = mutation({
     }
   }
 })
-
-async function validateToken(token: string) {
-  try {
-    /**
-     * This is the JWKS that you get from the /api/auth/
-     * jwks endpoint
-     */
-    const storedJWKS = {
-      keys: [
-        {
-          //...
-        }
-      ]
-    }
-    const JWKS = createLocalJWKSet({
-      keys: storedJWKS?.data.keys!
-    })
-    const { payload } = await jwtVerify(token, JWKS, {
-      issuer: 'http://localhost:3000', // Should match your JWT issuer which is the BASE_URL
-      audience: 'http://localhost:3000' // Should match your JWT audience which is the BASE_URL by default
-    })
-    return payload
-  } catch (error) {
-    console.error('Token validation failed:', error)
-    throw error
-  }
-}
