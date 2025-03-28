@@ -4,7 +4,7 @@ import { useQuery, useMutation } from 'convex/react'
 import { api } from '@repo/backend/convex/_generated/api'
 import { useEffect, useRef, useState } from 'react'
 import { authClient } from '../../../lib/auth-client'
-import { Id } from '@repo/backend/convex/_generated/dataModel'
+import type { Id } from '@repo/backend/convex/_generated/dataModel'
 
 export function Chat() {
   const { data: session } = authClient.useSession()
@@ -26,15 +26,24 @@ export function Chat() {
     }
 
     if (input.trim()) {
-      await sendMessage({ userId, message: input, name: session?.user.name || 'Anonymous' })
+      await sendMessage({
+        userId,
+        message: input,
+        name: session?.user.name || 'Anonymous'
+      })
       setInput('')
     }
   }
 
   const handleDelete = async (messageId: Id<'chat'>) => {
-    const response = await fetch('/api/auth/token')
-    const { token } = await response.json()
-    await deleteMessage({ messageId, jwt: token })
+    const session = await authClient.getSession()
+    if (!session.data?.session.token) {
+      return
+    }
+    await deleteMessage({
+      messageId,
+      sessionToken: session.data?.session.token
+    })
   }
 
   // Scroll to bottom with every new message
