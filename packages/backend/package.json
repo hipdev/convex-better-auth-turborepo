@@ -12,10 +12,10 @@
   "dependencies": {
     "@better-auth-kit/convex": "^1.2.2",
     "better-auth": "^1.2.5",
-    "convex": "^1.21.0",
+    "convex": "^1.23.0",
     "jose": "^6.0.10"
   },
   "devDependencies": {
-    "@types/node": "^22.13.14"
+    "@types/node": "^22.14.0"
   }
 }

@@ -1,9 +1,7 @@
-import type { GenericMutationCtx } from 'convex/server'
-import { internalMutation, mutation, query } from './_generated/server'
+import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
 
-import { jwtVerify, createLocalJWKSet } from 'jose'
-import { api, internal } from './_generated/api'
+import { internal } from './_generated/api'
 
 export const getMessages = query({
   args: {},
@@ -34,6 +32,7 @@ export const deleteMessage = mutation({
     const session = await ctx.runQuery(internal.betterAuth.getSession, {
       sessionToken: args.sessionToken
     })
+    console.log(session)
 
     if (!session) {
       throw new Error('Unauthorized')

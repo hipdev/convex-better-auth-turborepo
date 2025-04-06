@@ -7,7 +7,7 @@ import { authClient } from '../../../lib/auth-client'
 import type { Id } from '@repo/backend/convex/_generated/dataModel'
 
 export function Chat() {
-  const { data: session } = authClient.useSession()
+  const { data: session, isPending } = authClient.useSession()
 
   const messages = useQuery(api.chat.getMessages)
   const sendMessage = useMutation(api.chat.sendMessage)
@@ -53,6 +53,17 @@ export function Chat() {
       chatRef.current.scrollTop = chatRef.current.scrollHeight
     }
   }, [messages])
+
+  // Scroll to bottom on first render
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight
+    }
+  }, [chatRef])
+
+  if (isPending) {
+    return null
+  }
 
   return (
     <div className='flex h-[400px] flex-col overflow-hidden rounded-lg border border-gray-700'>
