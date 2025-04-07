@@ -8,7 +8,7 @@ import type { Id } from '@repo/backend/convex/_generated/dataModel'
 import { ChatSkeleton } from './chat-skeleton'
 import { authClient } from '@repo/ui/lib/auth-client'
 
-export function Chat() {
+export const ChatList = () => {
   const { data: session, isPending } = authClient.useSession()
 
   const messages = useQuery(api.chat.getMessages)
@@ -19,9 +19,9 @@ export function Chat() {
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    let userId = session?.user.id as Id<'user'>
+    let userId = session?.user?.id as Id<'user'>
 
-    if (!session?.user.id) {
+    if (!session?.user?.id) {
       // Create anonymous user
       const user = await authClient.signIn.anonymous()
       userId = user.data?.user?.id as Id<'user'>
@@ -31,7 +31,7 @@ export function Chat() {
       await sendMessage({
         userId,
         message: input,
-        name: session?.user.name || 'Anonymous'
+        name: session?.user?.name || 'Anonymous'
       })
       setInput('')
     }
@@ -54,7 +54,7 @@ export function Chat() {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight
     }
-  }, [messages])
+  }, [messages, session])
 
   // Scroll to bottom on first render
   useEffect(() => {
@@ -62,8 +62,9 @@ export function Chat() {
       chatRef.current.scrollTop = chatRef.current.scrollHeight
     }
   }, [chatRef])
+  console.log(messages, 'messages')
 
-  if (isPending) {
+  if (isPending || !messages) {
     return <ChatSkeleton />
   }
 
@@ -73,11 +74,11 @@ export function Chat() {
         {messages?.map((message) => (
           <div
             key={message._id}
-            className={`mb-4 ${message.userId === session?.user.id ? 'text-right' : 'text-left'}`}
+            className={`mb-4 ${message.userId === session?.user?.id ? 'text-right' : 'text-left'}`}
           >
             <div
               className={`group relative inline-block max-w-[80%] rounded-lg px-4 py-2 ${
-                message.userId === session?.user.id
+                message.userId === session?.user?.id
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-700 text-gray-100'
               } }`}
@@ -87,7 +88,7 @@ export function Chat() {
                 {new Date(message.createdAt).toLocaleTimeString()}
               </div>
               <div className='text-xs text-gray-300'>{message.name || 'Anonymous'}</div>
-              {message.userId === session?.user.id && (
+              {message.userId === session?.user?.id && (
                 <button
                   type='button'
                   className='absolute -right-1 -top-1 hidden cursor-pointer rounded-full bg-red-800 px-1 text-xs text-white transition-colors hover:bg-red-700 group-hover:block'

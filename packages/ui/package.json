@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./*": "./src/*.tsx"
+    "./*": "./src/*.tsx",
+    "./lib/*": "./src/lib/*.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -21,6 +22,7 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
+    "better-auth": "^1.2.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }

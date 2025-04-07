@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { authClient } from '../../../lib/auth-client'
+import { authClient } from '@repo/ui/lib/auth-client'
+import { LoginGoogle } from '@repo/ui/atoms/login-google'
 
 type FormErrors = {
   email?: string[]
@@ -163,18 +164,7 @@ export default function Home() {
 
           <div className='my-10 text-center'> ---- </div>
           <div>
-            <button
-              type='button'
-              onClick={async () => {
-                await authClient.signIn.social({
-                  provider: 'google',
-                  callbackURL: '/dashboard'
-                })
-              }}
-              className='w-full rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700'
-            >
-              Sign up with Google
-            </button>
+            <LoginGoogle />
           </div>
         </div>
       </div>
