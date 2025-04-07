@@ -16,6 +16,7 @@ export default defineSchema({
     email: v.string(),
     emailVerified: v.boolean(),
     updatedAt: v.string(),
-    isAnonymous: v.optional(v.boolean())
+    isAnonymous: v.optional(v.boolean()),
+    image: v.optional(v.string())
   }).index('by_email', ['email'])
 })

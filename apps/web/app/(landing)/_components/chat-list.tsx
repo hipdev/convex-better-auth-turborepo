@@ -11,11 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { convexQuery } from '@convex-dev/react-query'
 
 export const ChatList = () => {
-  const { data: session, isPending } = authClient.useSession()
-
-  // const messages = useQuery(api.chat.getMessages, {
-  //   enabled: session?.user?.id !== undefined
-  // })
+  const { data: session, isPending: isSessionPending } = authClient.useSession()
 
   const { data, isPending: isPendingMessages } = useQuery({
     ...convexQuery(api.chat.getMessages, {}),
@@ -24,6 +20,15 @@ export const ChatList = () => {
   const sendMessage = useMutation(api.chat.sendMessage)
   const deleteMessage = useMutation(api.chat.deleteMessage)
   const [input, setInput] = useState('')
+  const [isCreatingAnonymousUser, setIsCreatingAnonymousUser] = useState(false)
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
+
+  // This will avoid a flash when creating the anonymous user
+  useEffect(() => {
+    if (!isSessionPending) {
+      setIsInitialLoad(false)
+    }
+  }, [isSessionPending])
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -32,8 +37,11 @@ export const ChatList = () => {
 
     if (!session?.user?.id) {
       // Create anonymous user
+      setIsCreatingAnonymousUser(true)
       const user = await authClient.signIn.anonymous()
       userId = user.data?.user?.id as Id<'user'>
+      // This will avoid a flash when creating the anonymous user
+      setIsCreatingAnonymousUser(false)
     }
 
     if (input.trim()) {
@@ -57,22 +65,26 @@ export const ChatList = () => {
     })
   }
 
-  // Scroll to bottom with every new message
+  // Scroll to bottom with every new message and when messages load
   const chatRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight
+    const scrollToBottom = () => {
+      if (chatRef.current) {
+        chatRef.current.scrollTop = chatRef.current.scrollHeight
+      }
     }
-  }, [data, session])
 
-  // Scroll to bottom on first render
-  useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight
+    // Scroll when data changes
+    if (data?.length) {
+      scrollToBottom()
     }
-  }, [chatRef])
 
-  if (isPending || isPendingMessages) {
+    // Also scroll after a short delay to ensure content is rendered
+    const timeoutId = setTimeout(scrollToBottom, 100)
+    return () => clearTimeout(timeoutId)
+  }, [data, isSessionPending])
+
+  if ((isInitialLoad || isPendingMessages) && !isCreatingAnonymousUser) {
     return <ChatSkeleton />
   }
 
