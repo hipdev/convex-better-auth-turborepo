@@ -26,12 +26,18 @@ importers:
       '@better-auth-kit/convex':
         specifier: ^1.2.2
         version: 1.2.2(better-auth@1.2.5(typescript@5.8.3))(convex@1.23.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.3)
+      '@convex-dev/react-query':
+        specifier: 0.0.0-alpha.8
+        version: 0.0.0-alpha.8(@tanstack/react-query@5.72.0(react@19.1.0))(convex@1.23.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       '@repo/backend':
         specifier: workspace:*
         version: link:../../packages/backend
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@tanstack/react-query':
+        specifier: ^5.72.0
+        version: 5.72.0(react@19.1.0)
       better-auth:
         specifier: ^1.2.5
         version: 1.2.5(typescript@5.8.3)
@@ -192,6 +198,12 @@ packages:
 
   '@better-fetch/fetch@1.1.17':
     resolution: {integrity: sha512-MQonMalbmEshb+amuLtCkVjYliyyWrYXZkiMnHLgFjNEBsNBbZSY3+lYsFK1/VxePSupVkUW6xinqhqB3uHE1g==}
+
+  '@convex-dev/react-query@0.0.0-alpha.8':
+    resolution: {integrity: sha512-Rv/q7/CplU75f7ckBd2vh+HoeeQ0tOrjwMl14Hk7D/03e55oUIU0TV5JYYzC79ZQyyAtoj7CmCo5ZxcmtKNv1Q==}
+    peerDependencies:
+      '@tanstack/react-query': ^5.0.0
+      convex: ^1.17.0
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -721,6 +733,14 @@ packages:
 
   '@tailwindcss/postcss@4.0.16':
     resolution: {integrity: sha512-wgNRdylwhUk04T27Mlpi4fB4adPxChbqrqKhvYFJmYP+zW4Ren+PwYoUcns0xlbjolcjQuAG+GZHRQAfF7LOCg==}
+
+  '@tanstack/query-core@5.72.0':
+    resolution: {integrity: sha512-aa3p6Mou++JLLxxxVX9AB9uGeRIGc0JWkw96GASXuMG8K3D+JpYbSFcqXbkGFJ1eX2jKHPurmCBoO43RjjXJCA==}
+
+  '@tanstack/react-query@5.72.0':
+    resolution: {integrity: sha512-4Dejq/IiXrPlr/0xxj4H2GbC6KckwfTCoHWbd02+UoIV0laC9yke0d0KegmFdXJA712I6UCuy8WpPM76uuPJ+w==}
+    peerDependencies:
+      react: ^18 || ^19
 
   '@tootallnate/quickjs-emscripten@0.23.0':
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
@@ -2701,6 +2721,11 @@ snapshots:
 
   '@better-fetch/fetch@1.1.17': {}
 
+  '@convex-dev/react-query@0.0.0-alpha.8(@tanstack/react-query@5.72.0(react@19.1.0))(convex@1.23.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))':
+    dependencies:
+      '@tanstack/react-query': 5.72.0(react@19.1.0)
+      convex: 1.23.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
@@ -3119,6 +3144,13 @@ snapshots:
       lightningcss: 1.29.2
       postcss: 8.5.3
       tailwindcss: 4.0.16
+
+  '@tanstack/query-core@5.72.0': {}
+
+  '@tanstack/react-query@5.72.0(react@19.1.0)':
+    dependencies:
+      '@tanstack/query-core': 5.72.0
+      react: 19.1.0
 
   '@tootallnate/quickjs-emscripten@0.23.0': {}
 

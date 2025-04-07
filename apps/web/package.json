@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@better-auth-kit/convex": "^1.2.2",
+    "@convex-dev/react-query": "0.0.0-alpha.8",
     "@repo/backend": "workspace:*",
     "@repo/ui": "workspace:*",
+    "@tanstack/react-query": "^5.72.0",
     "better-auth": "^1.2.5",
     "convex": "^1.23.0",
     "next": "^15.2.4",

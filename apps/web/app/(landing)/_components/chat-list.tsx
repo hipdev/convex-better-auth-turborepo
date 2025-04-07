@@ -1,17 +1,26 @@
 'use client'
 
-import { useQuery, useMutation } from 'convex/react'
+import { useMutation } from 'convex/react'
 import { api } from '@repo/backend/convex/_generated/api'
 import { useEffect, useRef, useState } from 'react'
 
 import type { Id } from '@repo/backend/convex/_generated/dataModel'
 import { ChatSkeleton } from './chat-skeleton'
 import { authClient } from '@repo/ui/lib/auth-client'
+import { useQuery } from '@tanstack/react-query'
+import { convexQuery } from '@convex-dev/react-query'
 
 export const ChatList = () => {
   const { data: session, isPending } = authClient.useSession()
 
-  const messages = useQuery(api.chat.getMessages)
+  // const messages = useQuery(api.chat.getMessages, {
+  //   enabled: session?.user?.id !== undefined
+  // })
+
+  const { data, isPending: isPendingMessages } = useQuery({
+    ...convexQuery(api.chat.getMessages, {}),
+    initialData: []
+  })
   const sendMessage = useMutation(api.chat.sendMessage)
   const deleteMessage = useMutation(api.chat.deleteMessage)
   const [input, setInput] = useState('')
@@ -54,7 +63,7 @@ export const ChatList = () => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight
     }
-  }, [messages, session])
+  }, [data, session])
 
   // Scroll to bottom on first render
   useEffect(() => {
@@ -62,16 +71,15 @@ export const ChatList = () => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight
     }
   }, [chatRef])
-  console.log(messages, 'messages')
 
-  if (isPending || !messages) {
+  if (isPending || isPendingMessages) {
     return <ChatSkeleton />
   }
 
   return (
     <div className='flex h-[70vh] flex-col overflow-hidden rounded-lg border border-gray-700'>
       <div className='flex-1 overflow-y-auto bg-neutral-900 p-4' ref={chatRef}>
-        {messages?.map((message) => (
+        {data?.map((message) => (
           <div
             key={message._id}
             className={`mb-4 ${message.userId === session?.user?.id ? 'text-right' : 'text-left'}`}
