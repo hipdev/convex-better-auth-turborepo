@@ -8,8 +8,6 @@ import { Id } from './convex/_generated/dataModel'
 
 const convexClient = new ConvexHttpClient(process.env.CONVEX_URL!)
 
-console.log(process.env.CONVEX_URL, 'log')
-
 export const auth = betterAuth({
   database: convexAdapter(convexClient),
   plugins: [

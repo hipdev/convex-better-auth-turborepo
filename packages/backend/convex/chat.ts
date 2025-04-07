@@ -32,7 +32,6 @@ export const deleteMessage = mutation({
     const session = await ctx.runQuery(internal.betterAuth.getSession, {
       sessionToken: args.sessionToken
     })
-    console.log(session)
 
     if (!session) {
       throw new Error('Unauthorized')

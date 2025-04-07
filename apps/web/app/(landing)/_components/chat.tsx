@@ -3,8 +3,10 @@
 import { useQuery, useMutation } from 'convex/react'
 import { api } from '@repo/backend/convex/_generated/api'
 import { useEffect, useRef, useState } from 'react'
-import { authClient } from '../../../lib/auth-client'
+
 import type { Id } from '@repo/backend/convex/_generated/dataModel'
+import { ChatSkeleton } from './chat-skeleton'
+import { authClient } from '@repo/ui/lib/auth-client'
 
 export function Chat() {
   const { data: session, isPending } = authClient.useSession()
@@ -62,12 +64,12 @@ export function Chat() {
   }, [chatRef])
 
   if (isPending) {
-    return null
+    return <ChatSkeleton />
   }
 
   return (
-    <div className='flex h-[400px] flex-col overflow-hidden rounded-lg border border-gray-700'>
-      <div className='flex-1 overflow-y-auto bg-gray-800 p-4' ref={chatRef}>
+    <div className='flex h-[70vh] flex-col overflow-hidden rounded-lg border border-gray-700'>
+      <div className='flex-1 overflow-y-auto bg-neutral-900 p-4' ref={chatRef}>
         {messages?.map((message) => (
           <div
             key={message._id}
@@ -98,13 +100,13 @@ export function Chat() {
           </div>
         ))}
       </div>
-      <form onSubmit={handleSend} className='bg-gray-900 p-4'>
+      <form onSubmit={handleSend} className='bg-black p-4'>
         <div className='flex gap-2'>
           <input
             type='text'
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className='flex-1 rounded-lg bg-gray-800 px-4 py-2 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600'
+            className='flex-1 rounded-lg bg-neutral-900 px-4 py-2 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600'
             placeholder='Type a message...'
           />
           <button

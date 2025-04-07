@@ -1,8 +1,9 @@
 'use client'
-import { authClient } from '../../../lib/auth-client'
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { LoginGoogle } from '@repo/ui/atoms/login-google'
+import { authClient } from '@repo/ui/lib/auth-client'
 
 type FormErrors = {
   email?: string[]
@@ -119,18 +120,7 @@ export default function LoginPage() {
 
         <div className='my-10 text-center'> ---- </div>
         <div>
-          <button
-            type='button'
-            onClick={async () => {
-              const data = await authClient.signIn.social({
-                provider: 'google',
-                callbackURL: '/dashboard'
-              })
-            }}
-            className='w-full rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700'
-          >
-            Login with Google
-          </button>
+          <LoginGoogle />
         </div>
       </div>
     </div>

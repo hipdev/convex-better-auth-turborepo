@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { authClient } from '../../../lib/auth-client'
+import { authClient } from '@repo/ui/lib/auth-client'
 
 export const HeaderNav = () => {
   const { data: session, isPending } = authClient.useSession()
@@ -13,6 +13,9 @@ export const HeaderNav = () => {
       <nav className='flex space-x-4'>
         <Link href='/' className='text-gray-300 hover:text-white'>
           Chat
+        </Link>
+        <Link href='/dashboard' className='text-gray-300 hover:text-white'>
+          Dashboard
         </Link>
         <button
           type='button'

@@ -24,9 +24,9 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className='flex min-h-screen flex-col items-center justify-center p-4'>
+    <div className='flex flex-col items-center justify-center p-4'>
       <div className='w-full max-w-md space-y-4'>
-        <h1 className='text-2xl font-bold'>Dashboard</h1>
+        <h1 className='text-2xl font-bold'>Dashboard (Protected page)</h1>
         <div className='space-y-2'>
           <p>
             <span className='font-medium'>Name:</span> {session?.user.name}
@@ -35,12 +35,21 @@ export default function DashboardPage() {
             <span className='font-medium'>Email:</span> {session?.user.email}
           </p>
         </div>
-        <button
-          onClick={handleSignOut}
-          className='w-full rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700'
-        >
-          Log out
-        </button>
+        {session?.user.isAnonymous ? (
+          <button
+            onClick={handleSignOut}
+            className='w-full rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700'
+          >
+            Link account with Google
+          </button>
+        ) : (
+          <button
+            onClick={handleSignOut}
+            className='w-full rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700'
+          >
+            Log out
+          </button>
+        )}
       </div>
     </div>
   )
