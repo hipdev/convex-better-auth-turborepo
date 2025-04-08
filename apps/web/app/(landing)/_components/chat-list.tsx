@@ -17,7 +17,21 @@ export const ChatList = () => {
     ...convexQuery(api.chat.getMessages, {}),
     initialData: []
   })
-  const sendMessage = useMutation(api.chat.sendMessage)
+  const sendMessage = useMutation(api.chat.sendMessage).withOptimisticUpdate((localStore, args) => {
+    const currentMessages = localStore.getQuery(api.chat.getMessages, {})
+    if (currentMessages !== undefined) {
+      const now = Date.now()
+      const optimisticMessage = {
+        _id: crypto.randomUUID() as Id<'chat'>,
+        _creationTime: now,
+        createdAt: now,
+        message: args.message,
+        userId: args.userId,
+        name: args.name
+      }
+      localStore.setQuery(api.chat.getMessages, {}, [...currentMessages, optimisticMessage])
+    }
+  })
   const deleteMessage = useMutation(api.chat.deleteMessage).withOptimisticUpdate(
     (localStore, args) => {
       const currentMessages = localStore.getQuery(api.chat.getMessages, {})
@@ -33,6 +47,7 @@ export const ChatList = () => {
   const [input, setInput] = useState('')
   const [isCreatingAnonymousUser, setIsCreatingAnonymousUser] = useState(false)
   const [isInitialLoad, setIsInitialLoad] = useState(true)
+  const [pendingUserId, setPendingUserId] = useState<Id<'user'> | null>(null)
 
   // This will avoid a flash when creating the anonymous user
   useEffect(() => {
@@ -44,24 +59,35 @@ export const ChatList = () => {
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    let userId = session?.user?.id as Id<'user'>
+    if (!input.trim()) return
 
-    if (!session?.user?.id) {
-      // Create anonymous user
+    try {
       setIsCreatingAnonymousUser(true)
-      const user = await authClient.signIn.anonymous()
-      userId = user.data?.user?.id as Id<'user'>
-      // This will avoid a flash when creating the anonymous user
-      setIsCreatingAnonymousUser(false)
-    }
 
-    if (input.trim()) {
+      // Ensure we have a userId, either from session or by creating an anonymous user
+      let userId = session?.user?.id as Id<'user'>
+      const userName = session?.user?.name || 'Anonymous'
+
+      if (!userId) {
+        const user = await authClient.signIn.anonymous()
+        if (!user.data?.user?.id) {
+          throw new Error('Failed to create anonymous user')
+        }
+        userId = user.data.user.id as Id<'user'>
+        setPendingUserId(userId)
+      }
+
       await sendMessage({
         userId,
         message: input,
-        name: session?.user?.name || 'Anonymous'
+        name: userName
       })
+
       setInput('')
+    } catch (error) {
+      console.error('Error sending message:', error)
+    } finally {
+      setIsCreatingAnonymousUser(false)
     }
   }
 
@@ -104,11 +130,15 @@ export const ChatList = () => {
         {data?.map((message) => (
           <div
             key={message._id}
-            className={`mb-4 ${message.userId === session?.user?.id ? 'text-right' : 'text-left'}`}
+            className={`mb-4 ${
+              message.userId === session?.user?.id || message.userId === pendingUserId
+                ? 'text-right'
+                : 'text-left'
+            }`}
           >
             <div
               className={`group relative inline-block max-w-[80%] rounded-lg px-4 py-2 ${
-                message.userId === session?.user?.id
+                message.userId === session?.user?.id || message.userId === pendingUserId
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-700 text-gray-100'
               } }`}
@@ -118,7 +148,7 @@ export const ChatList = () => {
                 {new Date(message.createdAt).toLocaleTimeString()}
               </div>
               <div className='text-xs text-gray-300'>{message.name || 'Anonymous'}</div>
-              {message.userId === session?.user?.id && (
+              {(message.userId === session?.user?.id || message.userId === pendingUserId) && (
                 <button
                   type='button'
                   className='absolute -right-1 -top-1 hidden cursor-pointer rounded-full bg-red-800 px-1 text-xs text-white transition-colors hover:bg-red-700 group-hover:block'

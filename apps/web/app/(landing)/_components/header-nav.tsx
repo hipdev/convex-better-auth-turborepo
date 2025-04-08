@@ -2,13 +2,23 @@
 
 import Link from 'next/link'
 import { authClient } from '@repo/ui/lib/auth-client'
+import { useEffect, useState } from 'react'
 
 export const HeaderNav = () => {
   const { data: session, isPending } = authClient.useSession()
+  const [isMounted, setIsMounted] = useState(true)
 
-  if (isPending) return null
+  useEffect(() => {
+    if (!isPending) {
+      setIsMounted(false)
+    }
+  }, [isPending])
 
-  if (session && !session.user.isAnonymous) {
+  if (isMounted) {
+    return null
+  }
+
+  if (session && !session?.user?.isAnonymous) {
     return (
       <nav className='flex space-x-4'>
         <Link href='/' className='text-gray-300 hover:text-white'>
