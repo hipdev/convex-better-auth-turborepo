@@ -18,7 +18,18 @@ export const ChatList = () => {
     initialData: []
   })
   const sendMessage = useMutation(api.chat.sendMessage)
-  const deleteMessage = useMutation(api.chat.deleteMessage)
+  const deleteMessage = useMutation(api.chat.deleteMessage).withOptimisticUpdate(
+    (localStore, args) => {
+      const currentMessages = localStore.getQuery(api.chat.getMessages, {})
+      if (currentMessages !== undefined) {
+        localStore.setQuery(
+          api.chat.getMessages,
+          {},
+          currentMessages.filter((msg) => msg._id !== args.messageId)
+        )
+      }
+    }
+  )
   const [input, setInput] = useState('')
   const [isCreatingAnonymousUser, setIsCreatingAnonymousUser] = useState(false)
   const [isInitialLoad, setIsInitialLoad] = useState(true)
@@ -55,13 +66,12 @@ export const ChatList = () => {
   }
 
   const handleDelete = async (messageId: Id<'chat'>) => {
-    const session = await authClient.getSession()
-    if (!session.data?.session.token) {
+    if (!session?.session?.token) {
       return
     }
-    await deleteMessage({
+    deleteMessage({
       messageId,
-      sessionToken: session.data?.session.token
+      sessionToken: session.session.token
     })
   }
 
