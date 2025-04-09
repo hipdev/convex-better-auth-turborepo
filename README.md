@@ -23,6 +23,7 @@ Thanks to Convex and BetterAuth, you get:
 
 ## Tech Stack
 
+- **Monorepo**: Turborepo
 - **Frontend**: Next.js
 - **Backend**: Convex
 - **Authentication**: BetterAuth
