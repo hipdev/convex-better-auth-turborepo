@@ -6,7 +6,7 @@ import { fetchMutation } from 'convex/nextjs'
 import { api } from './convex/_generated/api'
 import { Id } from './convex/_generated/dataModel'
 
-const convexClient = new ConvexHttpClient(process.env.CONVEX_URL!)
+const convexClient = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
 
 export const auth = betterAuth({
   database: convexAdapter(convexClient),
