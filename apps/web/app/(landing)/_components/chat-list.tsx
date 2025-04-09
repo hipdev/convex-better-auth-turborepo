@@ -139,40 +139,39 @@ export const ChatList = () => {
         className='flex flex-1 flex-col-reverse overflow-y-auto scroll-smooth bg-neutral-900 p-4'
         ref={chatRef}
       >
-        {!isSessionPending &&
-          (data || []).map((message) => (
+        {(data || []).map((message) => (
+          <div
+            key={message._id}
+            className={`mb-4 ${
+              message.userId === session?.user?.id || message.userId === pendingUserId
+                ? 'text-right'
+                : 'text-left'
+            }`}
+          >
             <div
-              key={message._id}
-              className={`mb-4 ${
+              className={`group relative inline-block max-w-[80%] rounded-lg px-4 py-2 ${
                 message.userId === session?.user?.id || message.userId === pendingUserId
-                  ? 'text-right'
-                  : 'text-left'
-              }`}
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-700 text-gray-100'
+              } }`}
             >
-              <div
-                className={`group relative inline-block max-w-[80%] rounded-lg px-4 py-2 ${
-                  message.userId === session?.user?.id || message.userId === pendingUserId
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-700 text-gray-100'
-                } }`}
-              >
-                {message.message}
-                <div className='mt-1 text-xs text-gray-300'>
-                  {new Date(message.createdAt).toLocaleTimeString()}
-                </div>
-                <div className='text-xs text-gray-300'>{message.name || 'Anonymous'}</div>
-                {(message.userId === session?.user?.id || message.userId === pendingUserId) && (
-                  <button
-                    type='button'
-                    className='absolute -right-1 -top-1 hidden cursor-pointer rounded-full bg-red-800 px-1 text-xs text-white transition-colors hover:bg-red-700 group-hover:block'
-                    onClick={() => handleDelete(message._id)}
-                  >
-                    x
-                  </button>
-                )}
+              {message.message}
+              <div className='mt-1 text-xs text-gray-300'>
+                {new Date(message.createdAt).toLocaleTimeString()}
               </div>
+              <div className='text-xs text-gray-300'>{message.name || 'Anonymous'}</div>
+              {(message.userId === session?.user?.id || message.userId === pendingUserId) && (
+                <button
+                  type='button'
+                  className='absolute -right-1 -top-1 hidden cursor-pointer rounded-full bg-red-800 px-1 text-xs text-white transition-colors hover:bg-red-700 group-hover:block'
+                  onClick={() => handleDelete(message._id)}
+                >
+                  x
+                </button>
+              )}
             </div>
-          ))}
+          </div>
+        ))}
       </div>
       <form onSubmit={handleSend} className='bg-black p-4'>
         <div className='flex gap-2'>

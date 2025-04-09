@@ -8,5 +8,5 @@ export const authClient = createAuthClient({
   baseURL:
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:3000'
-      : 'https://convex-better-auth.vercel.app/'
+      : 'https://convex-betterauth-turborepo.vercel.app/'
 })
