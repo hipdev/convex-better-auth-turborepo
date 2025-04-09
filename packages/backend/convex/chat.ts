@@ -6,7 +6,7 @@ import { internal } from './_generated/api'
 export const getMessages = query({
   args: {},
   handler: async (ctx) => {
-    return await ctx.db.query('chat').order('asc').take(50)
+    return await ctx.db.query('chat').order('desc').take(20)
   }
 })
 

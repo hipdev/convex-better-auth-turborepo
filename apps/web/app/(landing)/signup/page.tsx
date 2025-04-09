@@ -72,6 +72,7 @@ export default function Home() {
 
       router.push('/dashboard')
     } catch (error) {
+      console.error(error)
       setErrors({
         _form: ['An error occurred while registering the user']
       })
